@@ -96,7 +96,7 @@ jobs:
         uses: ./.github/actions/store-evaluation
         with:
           evaluation-data: ${{ steps.evaluator.outputs.result }}
-          environment: staging
+          environment: production
 
       - name: Create feedback comment
         if: ${{ github.repository == env.template_name }}
