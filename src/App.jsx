@@ -4,18 +4,19 @@ import Card from './components/Card';
 
 class App extends React.Component {
   constructor() {
-    super()
+    super();
     this.state = {
       cardName: '',
       cardDescription: '',
-      cardAttr1: '',
-      cardAttr2: '',
-      cardAttr3: '',
+      cardAttr1: 0,
+      cardAttr2: 0,
+      cardAttr3: 0,
       cardImage: '',
-      cardRare: '',
+      cardRare: 'normal',
       cardTrunfo: false,
       isSaveButtonDisabled: true,
-    }
+      cards: [],
+    };
   }
 
   handleChange = ({ target }) => {
@@ -24,10 +25,40 @@ class App extends React.Component {
     this.setState({
       [name]: value,
     }, () => this.validationForm());
-  }
+  };
 
   validationForm = () => {
+    const {
+      cardName,
+      cardDescription,
+      cardAttr1,
+      cardAttr2,
+      cardAttr3,
+      cardImage,
+      cardRare,
+    } = this.state;
 
+    const validationInputs = cardName.length > 0 && cardDescription.length
+    > 0 && cardImage.length > 0 && cardRare.length > 0;
+
+    const maxOfPoints = 90;
+    const maxOfInputsSum = 210;
+
+    const individualInputMaxLength = (Number(cardAttr1 >= 0 && Number(cardAttr1)
+     <= maxOfPoints)) && (Number(cardAttr2 >= 0 && Number(cardAttr2)
+      <= maxOfPoints)) && (Number(cardAttr3 >= 0 && Number(cardAttr3) <= maxOfPoints));
+
+    const sumOfAttr = parseInt(cardAttr1, 10)
+    + parseInt(cardAttr2, 10) + parseInt(cardAttr3, 10) <= maxOfInputsSum;
+
+    const valitationAll = validationInputs && individualInputMaxLength && sumOfAttr;
+
+    this.setState({
+      isSaveButtonDisabled: !valitationAll,
+    });
+  };
+
+  saveBtn = () => {
     const {
       cardName,
       cardDescription,
@@ -37,30 +68,34 @@ class App extends React.Component {
       cardImage,
       cardRare,
       cardTrunfo,
-      isSaveButtonDisabled,
-    } = this.state
+      cards,
+    } = this.state;
 
-    const validationInputs = cardName.length > 0 && cardDescription.length > 0 && cardImage.length > 0 && cardRare.length > 0;
-
-    const maxOfPoints = 90;
-    const maxOfInputsSum = 210;
-
-    const validInputs = parseInt(cardAttr1, 10) >= 0 && parseInt(cardAttr2, 10) >= 0 && parseInt(cardAttr3, 10) >= 0;
-
-    const individualInputMaxLength = (Number(cardAttr1 >= 0 && Number(cardAttr1) <= maxOfPoints)) && (Number(cardAttr2 >= 0 && Number(cardAttr2) <= maxOfPoints)) && (Number(cardAttr3 >= 0 && Number(cardAttr3) <= maxOfPoints));
-
-    const sumOfAttr = parseInt(cardAttr1, 10) + parseInt(cardAttr2, 10) + parseInt(cardAttr3, 10) <= maxOfInputsSum;
-
-    const valitationAll = validationInputs && individualInputMaxLength && sumOfAttr;
-
+    const newArray = [...cards, {
+      cardName,
+      cardDescription,
+      cardAttr1,
+      cardAttr2,
+      cardAttr3,
+      cardImage,
+      cardRare,
+      cardTrunfo,
+    }];
     this.setState({
-      isSaveButtonDisabled: !valitationAll
-    })
+      cards: newArray,
+      cardName: '',
+      cardDescription: '',
+      cardAttr1: 0,
+      cardAttr2: 0,
+      cardAttr3: 0,
+      cardImage: '',
+      cardRare: 'normal',
+      cardTrunfo: false,
+      isSaveButtonDisabled: true,
+    });
+  };
 
-  }
-
-  render() {  
-
+  render() {
     const {
       cardName,
       cardDescription,
@@ -75,16 +110,20 @@ class App extends React.Component {
     return (
       <div>
         <h1>Tryunfo</h1>
-        <Form { ...this.state } onInputChange={ this.handleChange } />
-        <Card 
-        cardName={ cardName }
-        cardDescription={ cardDescription }
-        cardAttr1={ cardAttr1 }
-        cardAttr2={ cardAttr2 }
-        cardAttr3={ cardAttr3 }
-        cardImage={ cardImage }
-        cardRare={ cardRare }
-        cardTrunfo={ cardTrunfo }
+        <Form
+          { ...this.state }
+          onInputChange={ this.handleChange }
+          onSaveButtonClick={ this.saveBtn }
+        />
+        <Card
+          cardName={ cardName }
+          cardDescription={ cardDescription }
+          cardAttr1={ cardAttr1 }
+          cardAttr2={ cardAttr2 }
+          cardAttr3={ cardAttr3 }
+          cardImage={ cardImage }
+          cardRare={ cardRare }
+          cardTrunfo={ cardTrunfo }
         />
       </div>
     );
