@@ -8,9 +8,9 @@ class App extends React.Component {
     this.state = {
       cardName: '',
       cardDescription: '',
-      cardAttr1: 0,
-      cardAttr2: 0,
-      cardAttr3: 0,
+      cardAttr1: '0',
+      cardAttr2: '0',
+      cardAttr3: '0',
       cardImage: '',
       cardRare: 'normal',
       cardTrunfo: false,
@@ -95,6 +95,16 @@ class App extends React.Component {
     });
   };
 
+  superTrunfoValidation = () => {
+    const { cards } = this.state;
+
+    const isST = cards.some((card) => card.cardTrunfo === true);
+
+    const cond = isST === true ? 'Você já tem um Super Trunfo em seu baralho' : isST;
+
+    return cond;
+  };
+
   render() {
     const {
       cardName,
@@ -105,15 +115,26 @@ class App extends React.Component {
       cardImage,
       cardRare,
       cardTrunfo,
+      isSaveButtonDisabled,
     } = this.state;
 
     return (
       <div>
         <h1>Tryunfo</h1>
         <Form
-          { ...this.state }
           onInputChange={ this.handleChange }
           onSaveButtonClick={ this.saveBtn }
+          hasTrunfo={ this.superTrunfoValidation }
+          cardName={ cardName }
+          cardDescription={ cardDescription }
+          cardAttr1={ cardAttr1 }
+          cardAttr2={ cardAttr2 }
+          cardAttr3={ cardAttr3 }
+          cardImage={ cardImage }
+          cardRare={ cardRare }
+          cardTrunfo={ cardTrunfo }
+          isSaveButtonDisabled={ isSaveButtonDisabled }
+
         />
         <Card
           cardName={ cardName }
