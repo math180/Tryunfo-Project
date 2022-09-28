@@ -103,6 +103,14 @@ class App extends React.Component {
     return isST;
   };
 
+  remove(name) {
+    const { cards } = this.state;
+    const filterCard = cards.filter((ele) => ele.cardName !== name);
+
+    this.setState = ({
+      cards: filterCard });
+  }
+
   render() {
     const {
       cardName,
@@ -130,7 +138,6 @@ class App extends React.Component {
         cardTrunfo={ card.cardTrunfo }
       />
     ));
-
     return (
       <div>
         <h1>Tryunfo</h1>
@@ -148,17 +155,28 @@ class App extends React.Component {
           cardTrunfo={ cardTrunfo }
           isSaveButtonDisabled={ isSaveButtonDisabled }
         />
-        <Card
-          key={ cardName }
-          cardName={ cardName }
-          cardDescription={ cardDescription }
-          cardAttr1={ cardAttr1 }
-          cardAttr2={ cardAttr2 }
-          cardAttr3={ cardAttr3 }
-          cardImage={ Image }
-          cardRare={ cardRare }
-          cardTrunfo={ cardTrunfo }
-        />
+        {cards.map((card, i) => (
+          <div key={ i }>
+            <Card
+              key={ cardName }
+              cardName={ cardName }
+              cardDescription={ cardDescription }
+              cardAttr1={ cardAttr1 }
+              cardAttr2={ cardAttr2 }
+              cardAttr3={ cardAttr3 }
+              cardImage={ cardImage }
+              cardRare={ cardRare }
+              cardTrunfo={ cardTrunfo }
+            />
+            <button
+              type="button"
+              data-testid="delete-button"
+              onClick={ () => this.remove(card.cardName) }
+            >
+              Excluir
+            </button>
+          </div>
+        ))}
         <div>
           { showCards.length > 0 ? showCards : '' }
         </div>
