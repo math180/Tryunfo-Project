@@ -149,7 +149,17 @@ class App extends React.Component {
           cardRare={ cardRare }
           cardTrunfo={ cardTrunfo }
           isSaveButtonDisabled={ isSaveButtonDisabled }
-
+        />
+        <Card
+          key={ cardName }
+          cardName={ cardName }
+          cardDescription={ cardDescription }
+          cardAttr1={ cardAttr1 }
+          cardAttr2={ cardAttr2 }
+          cardAttr3={ cardAttr3 }
+          cardImage={ Image }
+          cardRare={ cardRare }
+          cardTrunfo={ cardTrunfo }
         />
         <div>
           { showCards.length > 0 ? showCards : '' }
