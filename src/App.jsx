@@ -100,9 +100,7 @@ class App extends React.Component {
 
     const isST = cards.some((card) => card.cardTrunfo === true);
 
-    const cond = isST === true ? 'Você já tem um Super Trunfo em seu baralho' : isST;
-
-    return cond;
+    return isST;
   };
 
   render() {
@@ -139,7 +137,7 @@ class App extends React.Component {
         <Form
           onInputChange={ this.handleChange }
           onSaveButtonClick={ this.saveBtn }
-          hasTrunfo={ this.superTrunfoValidation }
+          hasTrunfo={ this.superTrunfoValidation() }
           cardName={ cardName }
           cardDescription={ cardDescription }
           cardAttr1={ cardAttr1 }
